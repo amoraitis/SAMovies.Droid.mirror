@@ -3,6 +3,7 @@ package com.imdb.sa.Model;
 import com.google.gson.annotations.SerializedName;
 
 import java.sql.Date;
+import java.util.List;
 
 public class Movie {
 
@@ -18,7 +19,10 @@ public class Movie {
     private String overview;
     @SerializedName("release_date")
     private String release_date;
-
+    @SerializedName("ratings")
+    private List<Rating> ratings;
+    @SerializedName("comments")
+    private List<Comment> comments;
 
     public Movie(int id) {
         this.id = id;
@@ -72,4 +76,19 @@ public class Movie {
         this.release_date = release_date;
     }
 
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }

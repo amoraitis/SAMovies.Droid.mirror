@@ -17,12 +17,17 @@ public class User {
     private String password;
     @SerializedName("name")
     private String name;
-    private String favorites, seens;
+    @SerializedName("favorites")
+    private String favorites;
+    @SerializedName("seens")
+    private String seens;
 
     public User(String username, String password, String name){
         this.username = username;
         this.password=password;
         this.name = name;
+        this.favorites = "";
+        this.seens = "";
     }
 
     public int getId() {
@@ -57,11 +62,11 @@ public class User {
         this.name = name;
     }
 
-    public String getFavoritesString(){
+    public String getFavorites(){
         return this.favorites;
     }
 
-    public List<Integer> getFavorites() {
+    public List<Integer> getFavoritesList() {
         List<Integer> favsarray = null;
         try {
             JSONObject favsjson = new JSONObject(favorites);
@@ -77,6 +82,10 @@ public class User {
         return favsarray;
     }
 
+    public void setFavorites(String favorites){
+        this.favorites = favorites;
+    }
+
     public void setFavorites(List<Integer> favorites) throws JSONException {
         JSONArray favJSONarray = new JSONArray();
         for (Integer fav: favorites) {
@@ -85,7 +94,7 @@ public class User {
         this.favorites = favJSONarray.toString();
     }
 
-    public List<Integer> getSeens() {
+    public List<Integer> getSeensList() {
         List<Integer> seensarray = null;
         try {
             JSONObject seensjson = new JSONObject(favorites);
@@ -101,12 +110,20 @@ public class User {
         return seensarray;
     }
 
+    public String getSeens(){
+        return seens;
+    }
+
     public void setSeens(List<Integer> seens) throws JSONException {
         JSONArray seensJSONarray = new JSONArray();
         for (Integer seen: seens) {
             seensJSONarray.put(seen);
         }
         this.seens = seensJSONarray.toString();
+    }
+
+    public void setSeens(String seens){
+        this.seens = seens;
     }
 
 
