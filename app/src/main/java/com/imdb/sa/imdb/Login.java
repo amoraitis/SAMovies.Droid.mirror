@@ -23,14 +23,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Login extends AppCompatActivity {
     private final String username = "user", password="pass";
     private static final String TAG = Login.class.getSimpleName();
-    public static final String BASE_URL = "http://samoviesapi20180427042140.azurewebsites.net/api/users/";
+
     private static Retrofit retrofit = null;
+    EditText userNameText, passWordText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        final EditText userNameText = (EditText) findViewById(R.id.userLogin);
-        final EditText passWordText = (EditText) findViewById(R.id.passLogin);
+        userNameText = (EditText) findViewById(R.id.userLogin);
+        passWordText = (EditText) findViewById(R.id.passLogin);
         Button signupButLogin = (Button) findViewById(R.id.signupButLogin);
         signupButLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -42,14 +43,8 @@ public class Login extends AppCompatActivity {
         Button signinButLogin = (Button) findViewById(R.id.signinButLogin);
         signinButLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(userNameText.getText().toString().equals(username) && passWordText.getText().toString().equals(password)){
-                    Intent i = new Intent(Login.this, Home.class);
-                    SaveSharedPreference.setUserName(getApplicationContext(),userNameText.getText().toString());
-                    startActivity(i);
-                }
-                else{
-                    Toast.makeText(Login.this, "Username or password not found", Toast.LENGTH_LONG).show();
-                }
+                connectAndGetUser();
+
 
             }
         });
@@ -59,24 +54,29 @@ public class Login extends AppCompatActivity {
     private void connectAndGetUser(){
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(SAMoviesAPIService.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         SAMoviesAPIService saMoviesAPIService = retrofit.create(SAMoviesAPIService.class);
-        Call<User> call = saMoviesAPIService.getUser(1);
+        Call<User> call = saMoviesAPIService.getUserByUserName(userNameText.getText().toString()
+                , passWordText.getText().toString());
 
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                Intent i = new Intent(Login.this, Home.class);
-                SaveSharedPreference.setUserName(getApplicationContext(),response.body().toString());
-                startActivity(i);
+                if(response.body()==null){
+                    Toast.makeText(getApplicationContext(),"Wrong username or password!", Toast.LENGTH_LONG).show();
+                }else{
+                    Intent i = new Intent(Login.this, Home.class);
+                    SaveSharedPreference.setUserName(getApplicationContext(),response.body().toString());
+                    startActivity(i);
+                }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Cannot sign in", Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), "Couldn't perform action!", Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -23,13 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Home extends AppCompatActivity {
     private static final String TAG = Home.class.getSimpleName();
 
-    public static final String BASE_URL = "http://api.themoviedb.org/3/";
-
     private static Retrofit retrofit = null;
-
-    // insert your themoviedb.org API KEY here
-
-    private final static String API_KEY = "2b2fc7020dc3d25b0eb1a0a337c8daa3";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +38,12 @@ public class Home extends AppCompatActivity {
 
     private void connectAndGetApiData(final Home home) {
         if(retrofit==null){
-            retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+            retrofit = new Retrofit.Builder().baseUrl(MovieApiService.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         MovieApiService movieApiService = retrofit.create(MovieApiService.class);
-        Call<MovieResponse> call = movieApiService.getTopRatedMovies(API_KEY);
+        Call<MovieResponse> call = movieApiService.getTopRatedMovies(MovieApiService.API_KEY);
         call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
