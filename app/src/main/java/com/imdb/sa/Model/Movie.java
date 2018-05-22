@@ -19,10 +19,14 @@ public class Movie {
     private String overview;
     @SerializedName("release_date")
     private String release_date;
+
     @SerializedName("ratings")
     private List<Rating> ratings;
     @SerializedName("comments")
     private List<Comment> comments;
+    private List<Cast> cast;
+    private List<Crew> crew;
+    private String imdb_url;
 
     public Movie(int id) {
         this.id = id;
@@ -90,5 +94,29 @@ public class Movie {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Cast> getCast() {
+        return cast;
+    }
+
+    public void setCast(List<Cast> cast) {
+        this.cast = cast;
+    }
+
+    public List<Crew> getCrew() {
+        return crew;
+    }
+
+    public void setCrew(List<Crew> crew) {
+        this.crew = crew;
+    }
+
+    public String getImdb_url() {
+        return imdb_url;
+    }
+
+    public void setImdb_url(String imdb_url) {
+        this.imdb_url = imdb_url;
     }
 }

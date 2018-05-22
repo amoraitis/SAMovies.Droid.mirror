@@ -26,4 +26,15 @@ public interface MovieApiService {
     @GET("search/movie")
     Call<MovieResponse> searchMovies(@Query("api_key") String apiKey
             , @Query("language") String lang, @Query("query") String query, @Query("page") String page);
+
+    @GET("genre/movie/list")
+    Call<Genres> getGenres(@Query("api_key") String apiKey,
+                           @Query("language") String lang);
+    @GET("movie/{id}/gredits")
+    Call<GreditsResponse> getGredits(@Query("api_key") String apiKey,
+                                     @Path("id") int id);
+
+    @GET("movie/{id}/external_ids")
+    Call<Object> getExternalIds(@Query("api_key") String apiKey,
+                                @Path("id") int id);
 }
